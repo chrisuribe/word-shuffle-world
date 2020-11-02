@@ -12,7 +12,7 @@ function App() {
   const [shuffledWebpageWord, setShuffledWebpageWord] = useState("-");
   
   const getNewWord = async () => {
-    theNewWord = await getRandomWord();
+    const theNewWord = await getRandomWord();
 
     setWebpageWord(theNewWord);
     setShuffledWebpageWord(wordShuffle(theNewWord));
