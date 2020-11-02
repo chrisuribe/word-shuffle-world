@@ -8,22 +8,22 @@ import {wordShuffle} from "./services/StringManipulator";
 
 function App() {
 
-  const [word, setWord] = useState("-");
-  const [shuffledWord, setShuffledWord] = useState("-");
+  const [webpageWord, setWebpageWord] = useState("-");
+  const [shuffledWebpageWord, setShuffledWebpageWord] = useState("-");
   
-  const newWord = async () => {
-    word = await getRandomWord();
+  const getNewWord = async () => {
+    theNewWord = await getRandomWord();
 
-    setWord(word);
-    setShuffledWord(wordShuffle(word));
+    setWebpageWord(theNewWord);
+    setShuffledWebpageWord(wordShuffle(theNewWord));
    }
 
   return (
     <div className="App">
-      <p>{word}</p>
-      <p>{shuffledWord}</p>
+      <p>{webpageWord}</p>
+      <p>{shuffledWebpageWord}</p>
 
-      <button onClick={() => newWord()}>
+      <button onClick={() => getNewWord()}>
         Get New Word
       </button>
     </div>
