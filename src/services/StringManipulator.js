@@ -1,3 +1,5 @@
+import { Button } from '@material-ui/core';
+
 export function wordShuffle(word) {
     word = word.split('');
   
@@ -9,3 +11,13 @@ export function wordShuffle(word) {
 
     return word.join("");
   }
+
+export function wordToArray(word){
+
+ var finalMap = word.split("")
+                    .map(element => 
+                    <Button variant="contained" color="primary">{element}</Button>
+                    );
+
+  return finalMap;
+}
