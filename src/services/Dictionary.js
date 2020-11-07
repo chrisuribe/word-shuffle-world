@@ -4,6 +4,7 @@ const DATA_URL = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictiona
 
 export const getRandomWord = async () => {
   try {
+   
     const {data} = await axios.get(DATA_URL);
     return data.word;
   }catch(ex){

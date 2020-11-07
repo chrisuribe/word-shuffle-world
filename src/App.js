@@ -8,12 +8,15 @@ import boopSfx from './sounds/239523__cmdrobot__computer-beep-sfx-for-videogames
 
 import {getRandomWord} from "./services/Dictionary";
 import {wordShuffle, wordToArray} from "./services/StringManipulator";
+import Display from './components/Display';
+import ButtonWSW from './components/ButtonWSW';
 
 function App() {
 
   const [webpageWord, setWebpageWord] = useState("-");
   const [shuffledWebpageWord, setShuffledWebpageWord] = useState("-");
   const [play] = useSound(boopSfx);
+  const [display, setDisplay] = useState("~");
 
   const getNewWord = async () => {
     const theNewWord = await getRandomWord();
@@ -24,9 +27,10 @@ function App() {
 
   return (
     <div className="App">
+      <Display currentWord={display}/>
       <p>{webpageWord}</p>
       <p>{shuffledWebpageWord}</p>
-      <p>{wordToArray(shuffledWebpageWord)}</p>
+      <ButtonWSW word={shuffledWebpageWord} setDisplay={setDisplay} getDisplay={display} />
 
       <Button variant="contained" color="primary" onClick={() => getNewWord()}>
         Get New Word
