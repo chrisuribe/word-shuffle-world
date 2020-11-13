@@ -1,6 +1,7 @@
 import axios from 'axios';
   
-const DATA_URL = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=verb&excludePartOfSpeech=auxiliary-verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=7&api_key=" + process.env.REACT_APP_DICTIONARY_API_KEY;
+const DATA_URL = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=verb&excludePartOfSpeech=auxiliary-verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=7&api_key=" 
+                  + process.env.REACT_APP_DICTIONARY_API_KEY;
 
 export const getRandomWord = async () => {
   try {

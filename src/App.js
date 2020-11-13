@@ -30,6 +30,7 @@ function App() {
       <Display currentWord={display}/>
       <p>{webpageWord}</p>
       <p>{shuffledWebpageWord}</p>
+      
       <ButtonWSW word={shuffledWebpageWord} setDisplay={setDisplay} getDisplay={display} />
 
       <Button variant="contained" color="primary" onClick={() => getNewWord()}>
