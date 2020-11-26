@@ -1,7 +1,9 @@
 import axios from 'axios';
   
-const DATA_URL = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=verb&excludePartOfSpeech=auxiliary-verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=7&api_key=" 
+const DATA_URL = "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=verb&excludePartOfSpeech=auxiliary-verb&minCorpusCount=50000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=7&api_key=" 
                   + process.env.REACT_APP_DICTIONARY_API_KEY;
+
+
 
 export const getRandomWord = async () => {
   try {
@@ -17,5 +19,31 @@ export const getRandomWord = async () => {
     }
     return "Error. Try again later.";
   }
+};
+
+export const checkWord = async (word) => {
+
+  const SCORE_URL = "https://api.wordnik.com/v4/word.json/" 
+                  + word
+                  + "/scrabbleScore?api_key="
+                  + process.env.REACT_APP_DICTIONARY_API_KEY;
+
+  try {
+   
+    const {data} = await axios.get(SCORE_URL);
+    console.log("Got data:", data)
+    return data.value;
+  }catch(ex){
+    if(ex.response && ex.response.status === 429){
+      alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");
+    } else if (ex.response && ex.response.status === 404){
+      return 0;
+    } else {
+      console.log("Log ERROR: ", ex);
+      alert("An unexpected error occured.");
+    }
+    return "Error. Try again later.";
+  }
+
 };
 

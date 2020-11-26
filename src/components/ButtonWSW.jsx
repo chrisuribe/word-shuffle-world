@@ -12,10 +12,12 @@ function ButtonWSW({setDisplay, getDisplay, word}) {
         word.split("")
             .map(element => 
             <Button 
+                
                 name={element} 
                 key={element+Math.random()}
                 variant="contained" 
-                color="primary" 
+                color="primary"
+                
                 onClick={(e) => {updateButton(e)}}
                 >
             {element}
