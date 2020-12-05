@@ -2,7 +2,7 @@ import React from 'react';
 
 function Display(props) {
     return (
-        <div className="display" style={{ width: 400, textAlign: "center"}}>
+        <div className="display" >
             {props.text} &nbsp;
         </div>
     );

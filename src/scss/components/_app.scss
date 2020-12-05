@@ -1,0 +1,16 @@
+.App {
+  height: 100vh;
+  display: flex;
+  font-family: arial, sans-serif;
+  background-image: radial-gradient(
+    60% 400px at 50% 60%,
+    #841bad 5%,
+    #371761 100%
+  );
+
+  perspective: 500px;
+
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}

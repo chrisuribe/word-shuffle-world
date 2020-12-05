@@ -1,32 +1,33 @@
-import React from 'react';
-import { Button } from '@material-ui/core';
+import React from "react";
+import ClassNames from "./ClassNames";
 
-function ButtonWSW({setDisplay, getDisplay, word}) {
+function ButtonWSW({ setDisplay, getDisplay, word }) {
+  const updateButton = (e) => {
+    setDisplay(getDisplay + e.target.textContent);
+  };
 
-    const updateButton = (e) => {
-        setDisplay(getDisplay + e.target.textContent);
-        console.log(e);
-    }
+  var buttons = word.split("").map((element) => (
+    <ClassNames
+      name={element}
+      key={element + Math.random()}
+      variant="contained"
+      color="primary"
+      onClick={(e) => {
+        updateButton(e);
+      }}
+      word={word}
+    >
+      {element}
+    </ClassNames>
+  ));
 
-    var buttons = 
-        word.split("")
-            .map(element => 
-            <Button 
-                
-                name={element} 
-                key={element+Math.random()}
-                variant="contained" 
-                color="primary"
-                
-                onClick={(e) => {updateButton(e)}}
-                >
-            {element}
-            </Button>
-    );
-
-    return (
-        <div>{buttons}</div>
-    );
+  return (
+    <div className="tile-holder">
+      <div className="tile-holder__side"></div>
+      <div className="tile-holder__tiles">{buttons}</div>
+      <div className="tile-holder__side"></div>
+    </div>
+  );
 }
 
 export default ButtonWSW;
