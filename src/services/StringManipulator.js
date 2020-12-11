@@ -1,6 +1,7 @@
 
 
-export function wordShuffle(word) {
+export function wordShuffle(str) {
+    let word = str.slice();
     word = word.split('');
   
     //Shuffle letters

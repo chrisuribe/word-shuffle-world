@@ -4,13 +4,11 @@ import useSound from "use-sound";
 import { SettingsBackupRestore } from "@material-ui/icons";
 
 import boopSfx from "./sounds/239523__cmdrobot__computer-beep-sfx-for-videogames.wav";
-import "./css/styles.min.css";
+import "./dist/css/styles.min.css";
 
 import { getRandomWord, checkWord } from "./services/Dictionary";
 import { wordShuffle } from "./services/StringManipulator";
 
-import Display from "./components/Display";
-import ButtonWSW from "./components/ButtonWSW";
 import KeyProcessor from "./components/KeyProcessor";
 import Success from "./components/Success";
 import RoundedButton from "./components/RoundedButton";
@@ -18,6 +16,8 @@ import ShuffleButton from "./components/ShuffleButton";
 import ClearButton from "./components/ClearButton";
 import TileBoard from "./components/TileBoard";
 import Header from "./components/Header";
+import useButtonsWSW from "./hooks/useButtonsWSW";
+import useDisplayWSW from "./hooks/useDisplayWSW";
 
 function App() {
   // Timer starts gooing down
@@ -31,31 +31,49 @@ function App() {
 
   const [playNewWordSound] = useSound(boopSfx);
 
-  const [display, setDisplay] = useState("");
+  //const [display, setDisplay] = useState("");
   const [displayStatus, setDisplayStatus] = useState("Playing...");
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
 
   const [currentWord, setCurrentWord] = useState("");
-  const [shuffledWord, setShuffledWord] = useState("");
+  //const [shuffledWord, setShuffledWord] = useState("");
+
+  const refreshButtons = 
+    (newButtonLetter) => addDisplayLetter (newButtonLetter);
+  const refreshDisplay = 
+    (newDisplayLetter) => addLetter (newDisplayLetter);
+  
+  const [letters, setLetters, BuildLetters, addLetter, shuffleLetters] = useButtonsWSW(refreshButtons);
+
+  const [displayLetters, setDisplayLetters, BuildDisplay, addDisplayLetter, removeDisplayLetter, clearDisplay] = useDisplayWSW(refreshDisplay);
+
 
   const getNewWord = async () => {
-    const newWord = await getRandomWord();
-    setCurrentWord(newWord.toLowerCase());
-    setShuffledWord(wordShuffle(newWord));
+    let newWord = await getRandomWord();
+        newWord = newWord.toLowerCase();
+
+    setCurrentWord(newWord);
+    setLetters(newWord);
+    shuffleLetters(newWord);
+
+    console.log(`Current word: ${currentWord} \n
+                letters: ${letters}`);
+    
+
     playNewWordSound();
-    setDisplay("");
+    setDisplayLetters("");
     setDisplayStatus("Playing...");
     setRound(round + 1);
+
+
   };
 
-  const shuffleTiles = () => {
-    setShuffledWord(wordShuffle(currentWord));
-  };
 
   const processDisplayWord = async (word) => {
     const isWordScore = await checkWord(word);
-    setDisplay("");
+    clearDisplay();
+
     if (isWordScore > 0) {
       setDisplayStatus(`+${isWordScore} points!`);
       setScore(score + isWordScore);
@@ -77,6 +95,8 @@ function App() {
         <div className="pause"></div>
       </section>
 
+      
+  
       <Header round={round} score={score} />
 
       <TileBoard currentWord={currentWord} />
@@ -85,30 +105,27 @@ function App() {
 
       <div className="display-component">
         <ClearButton />
-        <Display text={display} />
-        <RoundedButton>
+        
+        
+        
+        <BuildDisplay />
+
+        <RoundedButton onClick={()=>{}}>
           <SettingsBackupRestore />
         </RoundedButton>
       </div>
 
-      <ButtonWSW
-        word={shuffledWord}
-        setDisplay={setDisplay}
-        getDisplay={display}
-      />
+      <BuildLetters />
 
       <div className="footer">
         <ShuffleButton
-          setShuffleWord={setShuffledWord}
-          wordShuffle={wordShuffle}
-          shuffledWord={shuffledWord}
-          shuffleTiles={shuffleTiles}
+          shuffleLetters={shuffleLetters}
         />
 
         <RoundedButton
           variant="contained"
           color="secondary"
-          onClick={() => processDisplayWord(display)}
+          onClick={() => processDisplayWord(displayLetters)}
         >
           Enter
         </RoundedButton>
@@ -124,12 +141,16 @@ function App() {
       </div>
 
       <KeyProcessor
-        setDisplay={setDisplay}
-        display={display}
+        setDisplay={setDisplayLetters}
+        display={displayLetters}
         currentWord={currentWord}
         processDisplayWord={processDisplayWord}
       />
+
+
     </div>
+
+    
   );
 }
 

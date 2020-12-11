@@ -6,10 +6,10 @@ function ButtonWSW({ setDisplay, getDisplay, word }) {
     setDisplay(getDisplay + e.target.textContent);
   };
 
-  var buttons = word.split("").map((element) => (
+  var buttons = word.split("").map((element, index) => (
     <ClassNames
       name={element}
-      key={element + Math.random()}
+      key={element + index}
       variant="contained"
       color="primary"
       onClick={(e) => {
