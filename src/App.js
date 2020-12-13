@@ -6,7 +6,11 @@ import { SettingsBackupRestore } from "@material-ui/icons";
 //import boopSfx from "./sounds/239523__cmdrobot__computer-beep-sfx-for-videogames.wav";
 import "./dist/css/styles.min.css";
 
-import { getRandomWord, checkWord } from "./services/Dictionary";
+import {
+  getRandomWord,
+  checkWord,
+  getRandomWords,
+} from "./services/Dictionary";
 
 import KeyProcessor from "./components/KeyProcessor";
 import Success from "./components/Success";
@@ -70,6 +74,7 @@ function App() {
       setRound(round + 1);
       //console.log(`current word: ${currentWord}.`);
     });
+    console.log(await getRandomWords());
   };
 
   const processDisplayWord = async (word) => {
