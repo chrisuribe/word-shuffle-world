@@ -1,5 +1,5 @@
 import React from "react";
-import ClassNames from "./ClassNames";
+import ClassNames from "./ClassNames.jsx";
 
 function ButtonWSW({ setDisplay, getDisplay, word }) {
   const updateButton = (e) => {

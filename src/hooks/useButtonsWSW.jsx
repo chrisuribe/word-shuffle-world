@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import ClassNames from '../components/ClassNames';
-import { wordShuffle } from '../services/StringManipulator';
+import React, { useState } from "react";
+import ClassNames from "../components/ClassNames.jsx";
+import { wordShuffle } from "../services/StringManipulator";
 
 const useButtonsWSW = (addDisplayLetter) => {
   const [letters, setLetters] = useState("");
-  //const [letterRemoved, setLetterRemoved] = useState("");
-  
+
   const addLetter = (newLetter) => setLetters(letters + newLetter);
 
   const removeLetter = (letterClicked) => {
@@ -14,41 +13,41 @@ const useButtonsWSW = (addDisplayLetter) => {
   };
 
   const shuffleLetters = (newWord) => {
-    newWord ? 
-    setLetters(wordShuffle(newWord)) : 
-    setLetters(wordShuffle(letters));
+    newWord
+      ? setLetters(wordShuffle(newWord))
+      : setLetters(wordShuffle(letters));
   };
 
-    const BuildLetters = () => (
+  const getButtonLetters = () => letters;
 
-      <div className="tile-holder">
+  const BuildLetters = () => (
+    <div className="tile-holder">
       <div className="tile-holder__side"></div>
       <div className="tile-holder__tiles">
-
-
-      {letters.split("").map((letter, index)=> (
-              <ClassNames
-                key={letter + index}
-                value={letter}
-                onClick={(button) => {
-                  const {data: letterClicked} = button.target.firstChild;
-                  removeLetter(letterClicked);
-                }}
-                >
-                  {letter}
-                </ClassNames>
-            ))}
-
-
+        {letters.split("").map((letter, index) => (
+          <ClassNames
+            key={letter + index}
+            onClick={(button) => {
+              const { data: letterClicked } = button.target.firstChild;
+              removeLetter(letterClicked);
+            }}
+          >
+            {letter}
+          </ClassNames>
+        ))}
       </div>
       <div className="tile-holder__side"></div>
     </div>
+  );
 
-
-    );
-
-    return [letters, setLetters, BuildLetters, addLetter, shuffleLetters];
+  return [
+    setLetters,
+    getButtonLetters,
+    BuildLetters,
+    addLetter,
+    shuffleLetters,
+    removeLetter,
+  ];
 };
 
 export default useButtonsWSW;
-

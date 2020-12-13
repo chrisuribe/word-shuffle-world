@@ -1,27 +1,30 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
-const useDisplayWSW = (addButtonLetter) => {
-    const [displayLetters, setDisplayLetters] = useState("");
-    //const [displayLetterRemoved, setDisplayLetterRemoved] = useState("");    
+const useDisplayWSW = () => {
+  const [displayLetters, setDisplayLetters] = useState("");
+  //const [displayLetterRemoved, setDisplayLetterRemoved] = useState("");
 
-    const addDisplayLetter = (newLetter) => setDisplayLetters(displayLetters + newLetter);
+  const addDisplayLetter = (newLetter) =>
+    setDisplayLetters(displayLetters + newLetter);
 
-    const clearDisplay = () => setDisplayLetters("");
+  const clearDisplay = () => setDisplayLetters("");
 
+  const removeDisplayLetter = () => {
+    setDisplayLetters(displayLetters.slice(0, displayLetters.length - 1)); // update letter removed state
+  };
 
+  const BuildDisplay = () => (
+    <div className="display">{displayLetters} &nbsp;</div>
+  );
 
-    const removeDisplayLetter = () => {
-      addButtonLetter(displayLetters.slice(-1)); // store the last letter
-      setDisplayLetters(displayLetters.slice(0,displayLetters.length-1)); // update letter removed state
-    };
-
-    const BuildDisplay = () => (
-        <div className="display" >
-            {displayLetters} &nbsp;
-        </div>
-    );
-
-    return ([displayLetters, setDisplayLetters, BuildDisplay, addDisplayLetter, removeDisplayLetter, clearDisplay]);
+  return [
+    displayLetters,
+    setDisplayLetters,
+    BuildDisplay,
+    addDisplayLetter,
+    clearDisplay,
+    removeDisplayLetter,
+  ];
 };
 
 export default useDisplayWSW;

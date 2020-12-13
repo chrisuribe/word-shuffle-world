@@ -1,7 +1,7 @@
 //import { Menu } from '@material-ui/core';
-import { Menu, Pause } from "@material-ui/icons";
+import { Pause } from "@material-ui/icons";
 import React from "react";
-import RoundedButton from "./RoundedButton";
+import RoundedButton from "./RoundedButton.jsx";
 
 function Header({ round, score }) {
   return (

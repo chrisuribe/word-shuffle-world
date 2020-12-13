@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import useSound from "use-sound";
+//import useSound from "use-sound";
 
 import { SettingsBackupRestore } from "@material-ui/icons";
 
-import boopSfx from "./sounds/239523__cmdrobot__computer-beep-sfx-for-videogames.wav";
+//import boopSfx from "./sounds/239523__cmdrobot__computer-beep-sfx-for-videogames.wav";
 import "./dist/css/styles.min.css";
 
 import { getRandomWord, checkWord } from "./services/Dictionary";
-import { wordShuffle } from "./services/StringManipulator";
 
 import KeyProcessor from "./components/KeyProcessor";
 import Success from "./components/Success";
 import RoundedButton from "./components/RoundedButton";
 import ShuffleButton from "./components/ShuffleButton";
-import ClearButton from "./components/ClearButton";
+
 import TileBoard from "./components/TileBoard";
 import Header from "./components/Header";
 import useButtonsWSW from "./hooks/useButtonsWSW";
 import useDisplayWSW from "./hooks/useDisplayWSW";
+import ClearButton from "./components/ClearButton";
 
 function App() {
   // Timer starts gooing down
@@ -29,55 +29,67 @@ function App() {
 
   // Guess once and miss... get a FREE LETTER
 
-  const [playNewWordSound] = useSound(boopSfx);
+  //const [playNewWordSound] = useSound(boopSfx);
 
-  //const [display, setDisplay] = useState("");
   const [displayStatus, setDisplayStatus] = useState("Playing...");
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
 
   const [currentWord, setCurrentWord] = useState("");
-  //const [shuffledWord, setShuffledWord] = useState("");
 
-  const refreshButtons = 
-    (newButtonLetter) => addDisplayLetter (newButtonLetter);
-  const refreshDisplay = 
-    (newDisplayLetter) => addLetter (newDisplayLetter);
-  
-  const [letters, setLetters, BuildLetters, addLetter, shuffleLetters] = useButtonsWSW(refreshButtons);
+  const refreshButtons = (newButtonLetter) => addDisplayLetter(newButtonLetter);
+  const refreshDisplay = (newDisplayLetter) => addLetter(newDisplayLetter);
 
-  const [displayLetters, setDisplayLetters, BuildDisplay, addDisplayLetter, removeDisplayLetter, clearDisplay] = useDisplayWSW(refreshDisplay);
+  const [
+    setLetters,
+    getButtonLetters,
+    BuildLetters,
+    addLetter,
+    shuffleLetters,
+    removeLetter,
+  ] = useButtonsWSW(refreshButtons);
 
+  const [
+    displayLetters,
+    setDisplayLetters,
+    BuildDisplay,
+    addDisplayLetter,
+    clearDisplay,
+    removeDisplayLetter,
+  ] = useDisplayWSW(refreshDisplay);
 
   const getNewWord = async () => {
-    let newWord = await getRandomWord();
-        newWord = newWord.toLowerCase();
-
-    setCurrentWord(newWord);
-    setLetters(newWord);
-    shuffleLetters(newWord);
-
-    console.log(`Current word: ${currentWord} \n
-                letters: ${letters}`);
-    
-
-    playNewWordSound();
-    setDisplayLetters("");
-    setDisplayStatus("Playing...");
-    setRound(round + 1);
-
-
+    await getRandomWord().then((recievedWord) => {
+      const word = recievedWord.toLowerCase();
+      setCurrentWord(word);
+      setLetters(word);
+      shuffleLetters(word);
+      //playNewWordSound();
+      setDisplayLetters("");
+      //setDisplayStatus("Playing...");
+      setRound(round + 1);
+      //console.log(`current word: ${currentWord}.`);
+    });
   };
 
-
   const processDisplayWord = async (word) => {
-    const isWordScore = await checkWord(word);
+    await checkWord(word).then((isWordScore) => {
+      if (isWordScore > 0) {
+        setDisplayStatus(`+${isWordScore} points!`);
+        setScore(score + isWordScore);
+      } else setDisplayStatus(`Not word! Keep playing...`);
+    });
     clearDisplay();
+    getNewWord();
+  };
 
-    if (isWordScore > 0) {
-      setDisplayStatus(`+${isWordScore} points!`);
-      setScore(score + isWordScore);
-    }
+  const displayToButtons = () => {
+    addLetter(displayLetters);
+    clearDisplay();
+  };
+  const oneDisplayToButtons = () => {
+    addLetter(displayLetters.slice(displayLetters.length - 1));
+    removeDisplayLetter(); //delete one ispljay number
   };
 
   return (
@@ -95,8 +107,6 @@ function App() {
         <div className="pause"></div>
       </section>
 
-      
-  
       <Header round={round} score={score} />
 
       <TileBoard currentWord={currentWord} />
@@ -104,13 +114,14 @@ function App() {
       <Success displayStatus={displayStatus} />
 
       <div className="display-component">
-        <ClearButton />
-        
-        
-        
-        <BuildDisplay />
+        <ClearButton displayToButtons={displayToButtons} />
 
-        <RoundedButton onClick={()=>{}}>
+        <BuildDisplay />
+        <RoundedButton
+          onClick={() => {
+            oneDisplayToButtons();
+          }}
+        >
           <SettingsBackupRestore />
         </RoundedButton>
       </div>
@@ -118,9 +129,7 @@ function App() {
       <BuildLetters />
 
       <div className="footer">
-        <ShuffleButton
-          shuffleLetters={shuffleLetters}
-        />
+        <ShuffleButton shuffleLetters={shuffleLetters} />
 
         <RoundedButton
           variant="contained"
@@ -143,14 +152,12 @@ function App() {
       <KeyProcessor
         setDisplay={setDisplayLetters}
         display={displayLetters}
-        currentWord={currentWord}
         processDisplayWord={processDisplayWord}
+        removeLetter={removeLetter}
+        oneDisplayToButtons={oneDisplayToButtons}
+        getButtonLetters={getButtonLetters}
       />
-
-
     </div>
-
-    
   );
 }
 

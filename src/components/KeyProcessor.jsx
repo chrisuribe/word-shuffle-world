@@ -1,41 +1,43 @@
-import React, { Component } from 'react';
+import React, { useEffect } from "react";
 
-class KeyProcessor extends Component {
+const KeyProcessor = (props) => {
+  const handleKeyDown = (e) => {
+    //console.log(props, e);
+    const {
+      display,
+      setDisplay,
+      processDisplayWord,
+      removeLetter,
+      oneDisplayToButtons,
+      getButtonLetters,
+    } = props;
 
-
-    
-    componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown);
+    if (e.key === "Enter" && display !== "") processDisplayWord(display);
+    else if (e.key === "Backspace") {
+      oneDisplayToButtons();
     }
-    
-    componentWillUnmount() {
-        window.removeEventListener('keydown',this.handleKeyDown);
+    // process word
+    // else if key is letterin word, then add to display.
+    else if (
+      getButtonLetters()
+        .split("")
+        .some((letter) => letter === e.key)
+    ) {
+      //console.log(`You typed: ${e.key} The word is: ${currentWord}`);
+      setDisplay(display + e.key);
+      removeLetter(e.key);
     }
-    
-    /////////////////////
-    
-    handleKeyDown = (e) => {
-        const {currentWord, display, setDisplay, processDisplayWord} = this.props;
-        
-        if(e.key === "Enter" && display !== "")
-            processDisplayWord(display);
-            // process word
+  };
 
-        // else if key is letterin word, then add to display.
-        else if(currentWord.split("").some((letter) => letter===e.key)){
-            console.log(`You typed: ${e.key} The word is: ${currentWord}`);
-            setDisplay(display + e.key);
-        }
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      // Anything in here is fired on component unmount.
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  //////////
+  }, [handleKeyDown]);
 
-    
-    render() {
-        return (
-            <div>
-            </div>
-        );
-    }
-}
+  return <div></div>;
+};
 
 export default KeyProcessor;
