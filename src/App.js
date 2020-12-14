@@ -33,12 +33,23 @@ function App() {
 
   // Guess once and miss... get a FREE LETTER
 
+  // ANOTHER PART OF THE GAME
+  // As you earn points, you get to build a larger city.
+  // with each game win you get to buy a new building or sell a building to buy anohter one
+
+  // ANOHTER IDEA
+  // once you get the word, you have to pick the correct definition.
+  // so, we'll get 4 random definitions and one real defenition.
+  // words you get wrong will be used in future games.
+
+  // THE MAIN IDEA
+  // It is that this game will help you learn new words.
+
   //const [playNewWordSound] = useSound(boopSfx);
 
   const [displayStatus, setDisplayStatus] = useState("Playing...");
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
-
   const [currentWord, setCurrentWord] = useState("");
 
   const refreshButtons = (newButtonLetter) => addDisplayLetter(newButtonLetter);
@@ -70,11 +81,10 @@ function App() {
       shuffleLetters(word);
       //playNewWordSound();
       setDisplayLetters("");
-      //setDisplayStatus("Playing...");
       setRound(round + 1);
-      //console.log(`current word: ${currentWord}.`);
     });
-    console.log(await getRandomWords());
+
+    //console.log(await getRandomWords());
   };
 
   const processDisplayWord = async (word) => {
