@@ -7,9 +7,9 @@ const KeyProcessor = (props) => {
       display,
       setDisplay,
       processDisplayWord,
-      removeLetter,
+      removeKey,
       oneDisplayToButtons,
-      getButtonLetters,
+      getKeyboard,
     } = props;
 
     if (e.key === "Enter" && display !== "") processDisplayWord(display);
@@ -19,13 +19,13 @@ const KeyProcessor = (props) => {
     // process word
     // else if key is letterin word, then add to display.
     else if (
-      getButtonLetters()
+      getKeyboard() // !!!--- switch this
         .split("")
         .some((letter) => letter === e.key)
     ) {
       //console.log(`You typed: ${e.key} The word is: ${currentWord}`);
       setDisplay(display + e.key);
-      removeLetter(e.key);
+      removeKey(e.key); // !!-- switch this
     }
   };
 

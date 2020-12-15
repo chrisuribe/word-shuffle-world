@@ -1,81 +1,22 @@
 import React from "react";
 
-function TileBoard({ currentWord }) {
+function TileBoard({ currentWords }) {
+  //'console.log(currentWords);
+
   return (
     <div className="tile-board-all">
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
-
-      <div className="tile-board-all tile-board">
-        {currentWord.split("").map((letter) => (
-          <div
-            className="tile-board-all tile-board tile"
-            key={letter + Math.random()}
-          >
-            {letter}
-          </div>
-        ))}
-      </div>
+      {currentWords.map((currentWord, index) => (
+        <div className="tile-board-all tile-board" key={currentWord + index}>
+          {currentWord.split("").map((letter, index) => (
+            <div
+              className="tile-board-all tile-board tile"
+              key={letter + index}
+            >
+              {letter}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

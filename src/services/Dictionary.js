@@ -27,7 +27,20 @@ export const getRandomWords = async () => {
   try {
     const { data } = await axios.get(DATA_URL_WORDS);
 
-    return data.map((w) => w.word);
+    //return data.map((w) => w.word);
+    // test data for now... restore the above line when ready.
+    return [
+      "harsh",
+      "tan",
+      "biting",
+      "rose",
+      "season",
+      "hybrid",
+      "ardent",
+      "cure",
+      "prod",
+      "chop",
+    ];
   } catch (ex) {
     if (ex.response && ex.response.status === 429) {
       alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");

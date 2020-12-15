@@ -14,7 +14,14 @@ function Header({ round, score }) {
         Score:&nbsp;
         <div className="header__status--data">{score}</div>
       </div>
-      <div className="header__status">
+    </div>
+  );
+}
+
+export default Header;
+
+/*
+<div className="header__status">
         Time:&nbsp;
         <div className="header__status--data">04:33</div>
       </div>
@@ -22,9 +29,23 @@ function Header({ round, score }) {
         <RoundedButton>
           <Pause />
         </RoundedButton>
-      </div>
-    </div>
-  );
-}
+      </div> 
+      */
 
-export default Header;
+/*
+<section className="header">
+        <div className="status">
+          Round: <span className="status data">{round}</span>
+        </div>
+        <div className="status data">
+          Score: <span className="data">{score}</span>
+        </div>
+        <div className="status data">
+          Time: <span className="data">04:50</span>
+        </div>
+        <div className="pause"></div>
+      </section>
+
+
+
+*/

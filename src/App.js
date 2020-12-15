@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 //import useSound from "use-sound";
 
-import { SettingsBackupRestore } from "@material-ui/icons";
+import { CloseOutlined, SettingsBackupRestore } from "@material-ui/icons";
 
 //import boopSfx from "./sounds/239523__cmdrobot__computer-beep-sfx-for-videogames.wav";
 import "./dist/css/styles.min.css";
@@ -22,6 +22,7 @@ import Header from "./components/Header";
 import useButtonsWSW from "./hooks/useButtonsWSW";
 import useDisplayWSW from "./hooks/useDisplayWSW";
 import ClearButton from "./components/ClearButton";
+import useKeyBoard from "./hooks/useKeyboard";
 
 function App() {
   // Timer starts gooing down
@@ -47,13 +48,18 @@ function App() {
 
   //const [playNewWordSound] = useSound(boopSfx);
 
-  const [displayStatus, setDisplayStatus] = useState("Playing...");
-  const [score, setScore] = useState(0);
-  const [round, setRound] = useState(0);
+  // SINGLE WORD VARIABLES
   const [currentWord, setCurrentWord] = useState("");
 
   const refreshButtons = (newButtonLetter) => addDisplayLetter(newButtonLetter);
   const refreshDisplay = (newDisplayLetter) => addLetter(newDisplayLetter);
+
+  // 10X WORD VARIABLES START
+  const [displayStatus, setDisplayStatus] = useState("Playing...");
+  const [score, setScore] = useState(0);
+  const [round, setRound] = useState(0);
+  const [currentWords, setCurrentWords] = useState(["InitialCW"]);
+  // 10X WORD VARIABLES END
 
   const [
     setLetters,
@@ -73,7 +79,18 @@ function App() {
     removeDisplayLetter,
   ] = useDisplayWSW(refreshDisplay);
 
+  // 10X WORD VARIABLES START
+  const [
+    BuildKeyboard,
+    shuffleKeyboard,
+    addKey,
+    removeKey,
+    setKeyboard,
+    getKeyboard,
+  ] = useKeyBoard(refreshButtons);
+
   const getNewWord = async () => {
+    /*
     await getRandomWord().then((recievedWord) => {
       const word = recievedWord.toLowerCase();
       setCurrentWord(word);
@@ -83,8 +100,20 @@ function App() {
       setDisplayLetters("");
       setRound(round + 1);
     });
+*/
+    await getRandomWords()
+      .then((recievedWords) => {
+        //console.log("fresh: ", recievedWords.join(""));
+        //const words = recievedWords.map((i) => i.toLowerCase());
+        // make sure to do this later
+        setCurrentWords(recievedWords);
+        setKeyboard(recievedWords.join(""));
 
-    //console.log(await getRandomWords());
+        shuffleKeyboard(recievedWords.join(""));
+        // playNewWordSound();
+        setRound(round + 1);
+      })
+      .catch(console.error);
   };
 
   const processDisplayWord = async (word) => {
@@ -98,33 +127,22 @@ function App() {
     getNewWord();
   };
 
+  /////Updated start for many words
   const displayToButtons = () => {
-    addLetter(displayLetters);
+    addKey(displayLetters);
     clearDisplay();
   };
   const oneDisplayToButtons = () => {
-    addLetter(displayLetters.slice(displayLetters.length - 1));
+    addKey(displayLetters.slice(displayLetters.length - 1));
     removeDisplayLetter(); //delete one ispljay number
   };
+  // updated end for many words
 
   return (
     <div className="App">
-      <section className="header">
-        <div className="status">
-          Round: <span className="status data">{round}</span>
-        </div>
-        <div className="status data">
-          Score: <span className="data">{score}</span>
-        </div>
-        <div className="status data">
-          Time: <span className="data">04:50</span>
-        </div>
-        <div className="pause"></div>
-      </section>
-
       <Header round={round} score={score} />
 
-      <TileBoard currentWord={currentWord} />
+      <TileBoard currentWords={currentWords} />
 
       <Success displayStatus={displayStatus} />
 
@@ -142,6 +160,7 @@ function App() {
       </div>
 
       <BuildLetters />
+      <BuildKeyboard />
 
       <div className="footer">
         <ShuffleButton shuffleLetters={shuffleLetters} />
@@ -168,9 +187,9 @@ function App() {
         setDisplay={setDisplayLetters}
         display={displayLetters}
         processDisplayWord={processDisplayWord}
-        removeLetter={removeLetter}
+        removeKey={removeKey}
         oneDisplayToButtons={oneDisplayToButtons}
-        getButtonLetters={getButtonLetters}
+        getKeyboard={getKeyboard}
       />
     </div>
   );
