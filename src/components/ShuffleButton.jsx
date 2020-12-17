@@ -2,11 +2,11 @@ import React from "react";
 import Shuffle from "@material-ui/icons/Shuffle";
 import RoundedButton from "./RoundedButton.jsx";
 
-function ShuffleButton({ shuffleLetters }) {
+function ShuffleButton({ shuffleKeyboard }) {
   return (
     <RoundedButton
       onClick={() => {
-        shuffleLetters();
+        shuffleKeyboard();
       }}
     >
       <Shuffle />

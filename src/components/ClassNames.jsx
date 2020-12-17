@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
+import { keys } from "@material-ui/core/styles/createBreakpoints";
+import { FormatColorTextSharp } from "@material-ui/icons";
 
 // We can inject some CSS into the DOM.
 const styles = {
@@ -18,14 +20,29 @@ const styles = {
     textShadow: "0px 0px 2px #CEAC68",
     margin: "5px",
   },
+  letter: {
+    //fontSize: "small",
+    position: "relative",
+    top: "-2.5px",
+  },
+  number: {
+    fontSize: "small",
+    position: "relative",
+    top: "2.5px",
+  },
 };
 
 function ClassNames(props) {
-  const { classes, children, className, ...other } = props;
+  const { classes, children, className, keysAvailable, ...other } = props;
 
   return (
     <Button className={clsx(classes.root, className)} {...other}>
-      {children || "class names"}
+      <span className={clsx(classes.letter, className)}>
+        {children || "class names"}
+      </span>
+      <span className={clsx(classes.number, className)}>
+        <sub>{keysAvailable}</sub>
+      </span>
     </Button>
   );
 }

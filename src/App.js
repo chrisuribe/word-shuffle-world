@@ -58,7 +58,7 @@ function App() {
   const [displayStatus, setDisplayStatus] = useState("Playing...");
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
-  const [currentWords, setCurrentWords] = useState(["InitialCW"]);
+  const [currentWords, setCurrentWords] = useState([""]);
   // 10X WORD VARIABLES END
 
   const [
@@ -110,6 +110,7 @@ function App() {
         setKeyboard(recievedWords.join(""));
 
         shuffleKeyboard(recievedWords.join(""));
+        setDisplayLetters("");
         // playNewWordSound();
         setRound(round + 1);
       })
@@ -163,7 +164,7 @@ function App() {
       <BuildKeyboard />
 
       <div className="footer">
-        <ShuffleButton shuffleLetters={shuffleLetters} />
+        <ShuffleButton shuffleKeyboard={shuffleKeyboard} />
 
         <RoundedButton
           variant="contained"

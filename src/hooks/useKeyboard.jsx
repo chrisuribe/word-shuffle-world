@@ -20,8 +20,22 @@ const useKeyboard = (addDisplayLetter) => {
 
   const getKeyboard = () => keyboard;
 
+  const countLetters = (letters, letter) => {
+    return letters.match(new RegExp(letter, "g") || []).length;
+  };
+
+  function findUniqueCharacters(string) {
+    var unique = "";
+    for (var i = 0; i < string.length; i++) {
+      if (unique.indexOf(string[i]) == -1) {
+        unique += string[i];
+      }
+    }
+    return unique;
+  }
+
   const keyboardBuilder = () => {
-    let kb = keyboard;
+    let kb = findUniqueCharacters(keyboard);
 
     return kb.split("").map((letter, index) => (
       <ClassNames
@@ -30,6 +44,7 @@ const useKeyboard = (addDisplayLetter) => {
           const { data: letterClicked } = button.target.firstChild;
           removeKey(letterClicked);
         }}
+        keysAvailable={countLetters(keyboard, letter)}
       >
         {letter}
       </ClassNames>
