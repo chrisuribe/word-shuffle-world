@@ -40,9 +40,34 @@ const useKeyboard = (addDisplayLetter) => {
     return kb.split("").map((letter, index) => (
       <ClassNames
         key={letter + index}
+        value={letter}
         onClick={(button) => {
-          const { data: letterClicked } = button.target.firstChild;
-          removeKey(letterClicked);
+          // I"m sure there is a better way to do this...later. If the button classnames are modified, this will need to be updated.
+          // I just didn't have time to figure out a more elegant way to fix this. For the purposes of the game this will work.
+          // the goal is simple. Hunt down the button's letter.
+
+          let buttonLetter = "~";
+          if (button.target.className === "MuiButton-label")
+            buttonLetter = button.target.innerText.toLowerCase().charAt(0);
+
+          if (button.target.className === "ClassNames-letter-3")
+            buttonLetter = button.target.firstChild.data;
+
+          if (
+            button.target.className ===
+            "MuiButtonBase-root MuiButton-root MuiButton-text ClassNames-root-2"
+          )
+            buttonLetter = button.target.innerText.toLowerCase().charAt(0);
+
+          if (
+            button.target.className === "numberArea" ||
+            button.target.className === "ClassNames-number-4"
+          )
+            buttonLetter = button.target.parentElement.parentElement.innerText
+              .toLowerCase()
+              .charAt(0);
+
+          removeKey(buttonLetter);
         }}
         keysAvailable={countLetters(keyboard, letter)}
       >

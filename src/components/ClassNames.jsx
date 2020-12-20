@@ -33,15 +33,24 @@ const styles = {
 };
 
 function ClassNames(props) {
-  const { classes, children, className, keysAvailable, ...other } = props;
+  const {
+    classes,
+    children,
+    className,
+    keysAvailable,
+    value,
+    ...other
+  } = props;
+
+  const finalLetter = children;
 
   return (
     <Button className={clsx(classes.root, className)} {...other}>
       <span className={clsx(classes.letter, className)}>
         {children || "class names"}
-      </span>
-      <span className={clsx(classes.number, className)}>
-        <sub>{keysAvailable}</sub>
+        <span className={clsx(classes.number, className)}>
+          <sub className="numberArea">{keysAvailable}</sub>
+        </span>
       </span>
     </Button>
   );
