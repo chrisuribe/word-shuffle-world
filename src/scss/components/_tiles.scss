@@ -45,7 +45,7 @@
       width: 40px;
 
       //padding-bottom: 10px;
-      font-size: 22px;
+      font-size: 28px;
 
       display: flex;
       justify-content: center;
@@ -61,6 +61,16 @@
         height: 30px;
         width: 30px;
       }
+    }
+    .bonus-letter {
+      background-color: #f0c459;
+      text-shadow: 0px 0px 2px #95686a;
+    }
+
+    .guessed-word {
+      background-color: white;
+      text-shadow: 0px 0px 2px #d7bfe8;
+      color: #371761;
     }
   }
 }

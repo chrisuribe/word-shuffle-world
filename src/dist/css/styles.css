@@ -218,7 +218,7 @@
   color: white;
   height: 40px;
   width: 40px;
-  font-size: 22px;
+  font-size: 28px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -242,6 +242,17 @@
     height: 30px;
     width: 30px;
   }
+}
+
+.tile-board-all .tile-board .bonus-letter {
+  background-color: #f0c459;
+  text-shadow: 0px 0px 2px #95686a;
+}
+
+.tile-board-all .tile-board .guessed-word {
+  background-color: white;
+  text-shadow: 0px 0px 2px #d7bfe8;
+  color: #371761;
 }
 
 .display {
@@ -305,44 +316,6 @@
 
 .header .header__status--data {
   color: orange;
-}
-
-.letter-board {
-  border: 2px solid #205bda;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  background-color: green;
-}
-
-.letter-board__word {
-  border: 1px solid #a1a3a0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  background-color: green;
-}
-
-.letter-board__tile {
-  border: 1px solid goldenrod;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  background-color: green;
-  -webkit-box-shadow: 0 10px 30px -10px black;
-          box-shadow: 0 10px 30px -10px black;
-  border-radius: 2px;
-  height: 30px;
-  width: 30px;
 }
 
 .App {

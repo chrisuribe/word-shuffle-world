@@ -44,7 +44,7 @@ const useKeyboard = (addDisplayLetter) => {
         onClick={(button) => {
           // I"m sure there is a better way to do this...later. If the button classnames are modified, this will need to be updated.
           // I just didn't have time to figure out a more elegant way to fix this. For the purposes of the game this will work.
-          // the goal is simple. Hunt down the button's letter.
+          // the goal is simple. Hunt down the button's letter so that it can be removed.
 
           let buttonLetter = "~";
           if (button.target.className === "MuiButton-label")
