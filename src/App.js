@@ -53,7 +53,7 @@ function App() {
   const [round, setRound] = useState(0);
   const [currentWords, setCurrentWords] = useState([""]);
   const [guessedWords, setGuessedWords] = useState([]);
-  const [bonusLetters, setBonusLetters] = useState(["a", "e", "i", "o", "u"]);
+  const [bonusLetters, setBonusLetters] = useState(["c", "e", "o"]);
 
   const [
     BuildDisplay,
@@ -79,25 +79,39 @@ function App() {
         //console.log("fresh: ", recievedWords.join(""));
         //const words = recievedWords.map((i) => i.toLowerCase());
         // make sure to do this later
+        setBonusLetters(["c", "e", "o"]);
         setCurrentWords(recievedWords);
         setGuessedWords([]);
         setKeyboard(recievedWords.join(""));
 
         shuffleKeyboard(recievedWords.join(""));
         setDisplayLetters("");
+
         // playNewWordSound();
         setRound(round + 1);
+        getBonusLetter();
       })
       .catch(console.error);
   };
 
   function getBonusLetter() {
     let newBonusLetter = "";
+    let letterBank = getDisplayLetters() + getKeyboard();
 
-    // the newBonusLetter must not already be in the bonusLetters array.
-    // the newBonusLetter will be taken from
+    let runTimes = 0;
 
-    setBonusLetters(newBonusLetter);
+    do {
+      if (letterBank <= 0) return;
+      newBonusLetter = letterBank.charAt(
+        Math.floor(Math.random() * letterBank.length)
+      );
+      console.log(
+        `ran:  ${runTimes++} letterBank: ${letterBank} | ${getDisplayLetters()}| ${getKeyboard()} | newBonusLetter: ${newBonusLetter} bonusLetters: ${bonusLetters}`
+      );
+      if (runTimes > 500) return;
+    } while (bonusLetters.includes(newBonusLetter));
+
+    setBonusLetters(bonusLetters + newBonusLetter);
   }
 
   function tileBoardWord(word) {
@@ -107,19 +121,25 @@ function App() {
   const processDisplayWord = async (word) => {
     let multiplierBonus = 1;
 
-    if (tileBoardWord(word)) {
-      let newGuessedWordsList = [word, ...guessedWords];
-      setGuessedWords(newGuessedWordsList);
-      multiplierBonus += 9;
-    }
+    await checkWord(word)
+      .then((isWordScore) => {
+        if (tileBoardWord(word)) {
+          let newGuessedWordsList = [word, ...guessedWords];
+          setGuessedWords(newGuessedWordsList);
+          multiplierBonus += 9;
+        }
 
-    await checkWord(word).then((isWordScore) => {
-      if (isWordScore > 0) {
-        setDisplayStatus(`+${isWordScore * multiplierBonus} points!`);
-        setScore(score + isWordScore * multiplierBonus);
-        clearDisplay();
-      } else setDisplayStatus(`Not word! Keep playing...`);
-    });
+        if (isWordScore > 0) {
+          setDisplayStatus(`+${isWordScore * multiplierBonus} points!`);
+          setScore(score + isWordScore * multiplierBonus);
+
+          if (tileBoardWord(word)) clearDisplay();
+          else displayToButtons();
+
+          getBonusLetter();
+        } else setDisplayStatus(`Not word! Keep playing...`);
+      })
+      .catch((e) => console.error("What do I do?", e));
 
     //getNewWord();
   };
@@ -183,7 +203,7 @@ function App() {
 
       <KeyProcessor
         setDisplay={setDisplayLetters}
-        display={getDisplayLetters()}
+        display={getDisplayLetters}
         processDisplayWord={processDisplayWord}
         removeKey={removeKey}
         oneDisplayToButtons={oneDisplayToButtons}

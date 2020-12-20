@@ -12,7 +12,7 @@ const KeyProcessor = (props) => {
       getKeyboard,
     } = props;
 
-    if (e.key === "Enter" && display !== "") processDisplayWord(display);
+    if (e.key === "Enter" && display() !== "") processDisplayWord(display());
     else if (e.key === "Backspace") {
       oneDisplayToButtons();
     }
@@ -24,7 +24,7 @@ const KeyProcessor = (props) => {
         .some((letter) => letter === e.key)
     ) {
       //console.log(`You typed: ${e.key} The word is: ${currentWord}`);
-      setDisplay(display + e.key);
+      setDisplay(display() + e.key);
       removeKey(e.key); // !!-- switch this
     }
   };

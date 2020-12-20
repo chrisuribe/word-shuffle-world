@@ -53,6 +53,7 @@ export const getRandomWords = async () => {
 };
 
 export const checkWord = async (word) => {
+  console.log("Received word: ", word);
   const SCORE_URL =
     "https://api.wordnik.com/v4/word.json/" +
     word +
@@ -65,7 +66,7 @@ export const checkWord = async (word) => {
     return data.value;
   } catch (ex) {
     if (ex.response && ex.response.status === 429) {
-      alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");
+      alert("Too many word requests... trying again in a bit...");
     } else if (ex.response && ex.response.status === 404) {
       return 0;
     } else {
