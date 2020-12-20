@@ -7,6 +7,8 @@ const useDisplayWSW = () => {
   const addDisplayLetter = (newLetter) =>
     setDisplayLetters(displayLetters + newLetter);
 
+  const getDisplayLetters = () => displayLetters;
+
   const clearDisplay = () => setDisplayLetters("");
 
   const removeDisplayLetter = () => {
@@ -18,12 +20,12 @@ const useDisplayWSW = () => {
   );
 
   return [
-    displayLetters,
-    setDisplayLetters,
     BuildDisplay,
+    getDisplayLetters,
+    setDisplayLetters,
     addDisplayLetter,
-    clearDisplay,
     removeDisplayLetter,
+    clearDisplay,
   ];
 };
 

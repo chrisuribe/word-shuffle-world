@@ -86,11 +86,11 @@ const useKeyboard = (addDisplayLetter) => {
 
   return [
     BuildKeyboard,
-    shuffleKeyboard,
+    getKeyboard,
+    setKeyboard,
     addKey,
     removeKey,
-    setKeyboard,
-    getKeyboard,
+    shuffleKeyboard,
   ];
 };
 

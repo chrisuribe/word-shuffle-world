@@ -338,4 +338,13 @@
       -ms-flex-align: center;
           align-items: center;
 }
+
+.display-status {
+  color: #7c795d;
+  font-family: "Trocchi", serif;
+  font-size: 25px;
+  font-weight: normal;
+  line-height: 48px;
+  margin: 10px;
+}
 /*# sourceMappingURL=styles.css.map */

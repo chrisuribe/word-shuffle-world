@@ -45,9 +45,10 @@ function App() {
   //const [playNewWordSound] = useSound(boopSfx);
 
   const refreshButtons = (newButtonLetter) => addDisplayLetter(newButtonLetter);
-  const refreshDisplay = (newDisplayLetter) => addLetter(newDisplayLetter);
 
-  const [displayStatus, setDisplayStatus] = useState("Playing...");
+  const [displayStatus, setDisplayStatus] = useState(
+    "Guess the words on the board or create a bonus point word using available letters."
+  );
   const [score, setScore] = useState(0);
   const [round, setRound] = useState(0);
   const [currentWords, setCurrentWords] = useState([""]);
@@ -55,30 +56,21 @@ function App() {
   const [bonusLetters, setBonusLetters] = useState(["a", "e", "i", "o", "u"]);
 
   const [
-    setLetters,
-    getButtonLetters,
-    BuildLetters,
-    addLetter,
-    shuffleLetters,
-    removeLetter,
-  ] = useButtonsWSW(refreshButtons);
-
-  const [
-    displayLetters,
-    setDisplayLetters,
     BuildDisplay,
+    getDisplayLetters,
+    setDisplayLetters,
     addDisplayLetter,
-    clearDisplay,
     removeDisplayLetter,
-  ] = useDisplayWSW(refreshDisplay);
+    clearDisplay,
+  ] = useDisplayWSW();
 
   const [
     BuildKeyboard,
-    shuffleKeyboard,
+    getKeyboard,
+    setKeyboard,
     addKey,
     removeKey,
-    setKeyboard,
-    getKeyboard,
+    shuffleKeyboard,
   ] = useKeyBoard(refreshButtons);
 
   const getNewWord = async () => {
@@ -98,6 +90,15 @@ function App() {
       })
       .catch(console.error);
   };
+
+  function getBonusLetter() {
+    let newBonusLetter = "";
+
+    // the newBonusLetter must not already be in the bonusLetters array.
+    // the newBonusLetter will be taken from
+
+    setBonusLetters(newBonusLetter);
+  }
 
   function tileBoardWord(word) {
     return currentWords.includes(word);
@@ -124,11 +125,11 @@ function App() {
   };
 
   const displayToButtons = () => {
-    addKey(displayLetters);
+    addKey(getDisplayLetters());
     clearDisplay();
   };
   const oneDisplayToButtons = () => {
-    addKey(displayLetters.slice(displayLetters.length - 1));
+    addKey(getDisplayLetters().slice(getDisplayLetters().length - 1));
     removeDisplayLetter(); //delete one ispljay number
   };
 
@@ -157,7 +158,6 @@ function App() {
         </RoundedButton>
       </div>
 
-      <BuildLetters />
       <BuildKeyboard />
 
       <div className="footer">
@@ -166,7 +166,7 @@ function App() {
         <RoundedButton
           variant="contained"
           color="secondary"
-          onClick={() => processDisplayWord(displayLetters)}
+          onClick={() => processDisplayWord(getDisplayLetters())}
         >
           Enter
         </RoundedButton>
@@ -183,7 +183,7 @@ function App() {
 
       <KeyProcessor
         setDisplay={setDisplayLetters}
-        display={displayLetters}
+        display={getDisplayLetters()}
         processDisplayWord={processDisplayWord}
         removeKey={removeKey}
         oneDisplayToButtons={oneDisplayToButtons}
