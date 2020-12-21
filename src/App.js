@@ -53,7 +53,7 @@ function App() {
   const [round, setRound] = useState(0);
   const [currentWords, setCurrentWords] = useState([""]);
   const [guessedWords, setGuessedWords] = useState([]);
-  const [bonusLetters, setBonusLetters] = useState(["c", "e", "o"]);
+  const [bonusLetters, setBonusLetters] = useState(["c"]);
 
   const [
     BuildDisplay,
@@ -102,6 +102,8 @@ function App() {
 
     do {
       if (letterBank <= 0) return;
+      //if (currentWords.length === guessedWords.length) return;
+
       newBonusLetter = letterBank.charAt(
         Math.floor(Math.random() * letterBank.length)
       );
@@ -109,7 +111,7 @@ function App() {
         `ran:  ${runTimes++} letterBank: ${letterBank} | ${getDisplayLetters()}| ${getKeyboard()} | newBonusLetter: ${newBonusLetter} bonusLetters: ${bonusLetters}`
       );
       if (runTimes > 500) return;
-    } while (bonusLetters.includes(newBonusLetter));
+    } while (bonusLetters.includes(newBonusLetter) && bonusLetters.length < 10);
 
     setBonusLetters(bonusLetters + newBonusLetter);
   }

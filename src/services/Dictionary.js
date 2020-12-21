@@ -27,9 +27,9 @@ export const getRandomWords = async () => {
   try {
     const { data } = await axios.get(DATA_URL_WORDS);
 
-    //return data.map((w) => w.word);
+    return data.map((w) => w.word);
     // test data for now... restore the above line when ready.
-    return [
+    /*return [
       "harsh",
       "tan",
       "biting",
@@ -40,7 +40,7 @@ export const getRandomWords = async () => {
       "cure",
       "prod",
       "chop",
-    ];
+    ];*/
   } catch (ex) {
     if (ex.response && ex.response.status === 429) {
       alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");
@@ -60,19 +60,29 @@ export const checkWord = async (word) => {
     "/scrabbleScore?api_key=" +
     process.env.REACT_APP_WORDNIK_KEY;
 
-  try {
-    const { data } = await axios.get(SCORE_URL);
-    //console.log("Got data:", data)
-    return data.value;
-  } catch (ex) {
-    if (ex.response && ex.response.status === 429) {
-      alert("Too many word requests... trying again in a bit...");
-    } else if (ex.response && ex.response.status === 404) {
-      return 0;
-    } else {
-      //console.log("Log ERROR: ", ex);
-      alert("An unexpected error occured.");
+  let count = 0;
+  let maxTries = 5;
+  while (count <= maxTries) {
+    try {
+      const { data } = await axios.get(SCORE_URL);
+      //console.log("Got data:", data)
+      return data.value;
+    } catch (ex) {
+      if (ex.response && ex.response.status === 429) {
+        console.error("Too many word requests... trying again in a bit...");
+        let delayInMilliseconds = 4000;
+        setTimeout(function () {
+          console.error("Trying again now...");
+          //your code to be executed after 1 second
+        }, delayInMilliseconds);
+        continue;
+      } else if (ex.response && ex.response.status === 404) {
+        return 0;
+      } else {
+        //console.log("Log ERROR: ", ex);
+        alert("An unexpected error occured.");
+      }
+      if (++count == maxTries) throw ex;
     }
-    return "Error. Try again later.";
   }
 };
