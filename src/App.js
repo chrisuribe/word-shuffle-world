@@ -54,6 +54,7 @@ function App() {
   const [currentWords, setCurrentWords] = useState([""]);
   const [guessedWords, setGuessedWords] = useState([]);
   const [bonusLetters, setBonusLetters] = useState(["c"]);
+  const [keyProcessorDisabled, setKeyProcessorDisabled] = useState(false);
 
   const [
     BuildDisplay,
@@ -121,6 +122,7 @@ function App() {
   }
 
   const processDisplayWord = async (word) => {
+    setKeyProcessorDisabled(true);
     let multiplierBonus = 1;
 
     await checkWord(word)
@@ -140,6 +142,8 @@ function App() {
 
           getBonusLetter();
         } else setDisplayStatus(`Not word! Keep playing...`);
+
+        setKeyProcessorDisabled(false);
       })
       .catch((e) => console.error("What do I do?", e));
 
@@ -188,6 +192,7 @@ function App() {
         <RoundedButton
           variant="contained"
           color="secondary"
+          disabled={keyProcessorDisabled}
           onClick={() => processDisplayWord(getDisplayLetters())}
         >
           Enter
@@ -210,6 +215,7 @@ function App() {
         removeKey={removeKey}
         oneDisplayToButtons={oneDisplayToButtons}
         getKeyboard={getKeyboard}
+        keyProcessorDisabled={keyProcessorDisabled}
       />
     </div>
   );

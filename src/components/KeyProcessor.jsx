@@ -10,9 +10,11 @@ const KeyProcessor = (props) => {
       removeKey,
       oneDisplayToButtons,
       getKeyboard,
+      keyProcessorDisabled,
     } = props;
 
-    if (e.key === "Enter" && display() !== "") processDisplayWord(display());
+    if (e.key === "Enter" && display() !== "" && !keyProcessorDisabled)
+      processDisplayWord(display());
     else if (e.key === "Backspace") {
       oneDisplayToButtons();
     }

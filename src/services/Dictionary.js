@@ -60,22 +60,22 @@ export const checkWord = async (word) => {
     "/scrabbleScore?api_key=" +
     process.env.REACT_APP_WORDNIK_KEY;
 
-  let count = 0;
-  let maxTries = 5;
+  let count = 1;
+  let delay = 500;
+  let maxTries = 10;
+
   while (count <= maxTries) {
     try {
+      await new Promise((resolve) => setTimeout(resolve, delay));
       const { data } = await axios.get(SCORE_URL);
-      //console.log("Got data:", data)
       return data.value;
     } catch (ex) {
       if (ex.response && ex.response.status === 429) {
-        console.error("Too many word requests... trying again in a bit...");
-        let delayInMilliseconds = 4000;
-        setTimeout(function () {
-          console.error("Trying again now...");
-          //your code to be executed after 1 second
-        }, delayInMilliseconds);
-        continue;
+        console.error(
+          "Too many word requests... trying again in a bit...",
+          count
+        );
+        delay = 10000;
       } else if (ex.response && ex.response.status === 404) {
         return 0;
       } else {
