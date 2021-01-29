@@ -1,5 +1,5 @@
 import React from "react";
-import { getRandomWord, getRandomWords } from "../services/Dictionary";
+import { getRandomWords } from "../services/Dictionary";
 
 const RandomWords = () => {
   const getNewWord = async () => {

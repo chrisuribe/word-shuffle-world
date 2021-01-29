@@ -1,35 +1,27 @@
 import axios from "axios";
 
-const DATA_URL =
-  "http://api.wordnik.com:80/v4/words.json/randomWord?hasDictionaryDef=true&includePartOfSpeech=verb&excludePartOfSpeech=auxiliary-verb&minCorpusCount=50000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=7&api_key=" +
-  process.env.REACT_APP_WORDNIK_KEY;
-
-const DATA_URL_WORDS =
+const RANDOM_WORDS_API_URL =
   "https://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&includePartOfSpeech=adjective%2Cverb%2Cadverb%2Cconjunction&minCorpusCount=30000&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=3&maxLength=6&limit=10&api_key=" +
   process.env.REACT_APP_WORDNIK_KEY;
 
-export const getRandomWord = async () => {
+export const getRandomWords = async () => {
+  console.log("Getting random words...");
   try {
-    const { data } = await axios.get(DATA_URL);
-    return data.word;
+    const { data } = await axios.get(RANDOM_WORDS_API_URL);
+    const words = data.map((w) => w.word);
+
+    //TASK: Make sure to return only words retrieved from the service which
+    // are in our dictionary.
+
+    return words;
   } catch (ex) {
     if (ex.response && ex.response.status === 429) {
-      alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");
+      console.error("SLOW DOWN! Too many word requests.");
     } else {
-      //console.log("Log ERROR: ", ex);
-      alert("An unexpected error occured.");
+      console.error("Unexpected error occured: ", ex);
     }
-    return "Error. Try again later.";
-  }
-};
-export const getRandomWords = async () => {
-  console.log("getting random words...");
-  try {
-    const { data } = await axios.get(DATA_URL_WORDS);
-
-    return data.map((w) => w.word);
-    // test data for now... restore the above line when ready.
-    /*return [
+    // backup data (in the future get random words from my own API)
+    return [
       "harsh",
       "tan",
       "biting",
@@ -40,49 +32,21 @@ export const getRandomWords = async () => {
       "cure",
       "prod",
       "chop",
-    ];*/
-  } catch (ex) {
-    if (ex.response && ex.response.status === 429) {
-      alert("SLOW DOWN! Too many word requests. Try again in a few minutes.");
-    } else {
-      console.log("Log ERROR: ", ex);
-      alert("An unexpected error occured.");
-    }
-    return "Error. Try again later.";
+    ];
   }
 };
 
+// get scrabble score for word
 export const checkWord = async (word) => {
-  console.log("Received word: ", word);
-  const SCORE_URL =
-    "https://api.wordnik.com/v4/word.json/" +
-    word +
-    "/scrabbleScore?api_key=" +
-    process.env.REACT_APP_WORDNIK_KEY;
+  const SCRABBLE_SCORE_API_URL =
+    "https://scrabble-score-wsw.herokuapp.com/api/scrabbleScore?word=" + word;
 
-  let count = 1;
-  let delay = 500;
-  let maxTries = 10;
-
-  while (count <= maxTries) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      const { data } = await axios.get(SCORE_URL);
-      return data.value;
-    } catch (ex) {
-      if (ex.response && ex.response.status === 429) {
-        console.error(
-          "Too many word requests... trying again in a bit...",
-          count
-        );
-        delay = 10000;
-      } else if (ex.response && ex.response.status === 404) {
-        return 0;
-      } else {
-        //console.log("Log ERROR: ", ex);
-        alert("An unexpected error occured.");
-      }
-      if (++count == maxTries) throw ex;
-    }
+  // send word to server and retrun score
+  try {
+    const { data } = await axios.get(SCRABBLE_SCORE_API_URL);
+    const score = data.value;
+    return score;
+  } catch (ex) {
+    console.error(ex.response);
   }
 };
