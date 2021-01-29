@@ -55,6 +55,7 @@ function App() {
   const [guessedWords, setGuessedWords] = useState([]);
   const [bonusLetters, setBonusLetters] = useState(["c"]);
   const [keyProcessorDisabled, setKeyProcessorDisabled] = useState(false);
+  const [started, setStarted] = useState(true);
 
   const [
     BuildDisplay,
@@ -158,6 +159,11 @@ function App() {
     addKey(getDisplayLetters().slice(getDisplayLetters().length - 1));
     removeDisplayLetter(); //delete one ispljay number
   };
+
+  if (started) {
+    getNewWord();
+    setStarted(false);
+  }
 
   return (
     <div className="App">
